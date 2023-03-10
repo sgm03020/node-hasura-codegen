@@ -1,21 +1,42 @@
-query user {
-  user {
+query MyQuery {
+  test {
     id
-    email
-    password
   }
 }
 
-query getUser($where: user_bool_exp) {
-  user(where: $where) {
-    id
-    email
-    password
-  }
-}
+# 指定されたidのユーザーがある場合はcountが1以上
+#query userCount($id: String!) {
+#  users_aggregate(where: { id: { _eq: $id } }) {
+#    aggregate {
+#      count
+#    }
+#  }
+#}
 
-mutation registerUser($user: user_insert_input!) {
-  insert_user_one(object: $user) {
-    id
-  }
-}
+# getTeamName
+# OKパターン
+# 指定されたteam_idでかつteam_memberに指定されたteam_id, user_idの人物が
+# 所属する場合にteamの名前や説明を返す(現在採用中)
+# ただし、別の方法もある
+
+#query user {
+#  user {
+#    id
+#    email
+#    password
+#  }
+#}
+
+#query getUser($where: user_bool_exp) {
+#  user(where: $where) {
+#    id
+#    email
+#    password
+#  }
+#}
+
+#mutation registerUser($user: user_insert_input!) {
+#  insert_user_one(object: $user) {
+#    id
+#  }
+#}

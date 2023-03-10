@@ -1,5 +1,6 @@
-// https://the-guild.dev/graphql/codegen/docs/config-reference/require-field
-module.exports = {
+import { CodegenConfig } from '@graphql-codegen/cli'
+
+const config: CodegenConfig = {
   overwrite: true,
   schema: [
     {
@@ -34,3 +35,5 @@ module.exports = {
     }
   }
 }
+
+export default config

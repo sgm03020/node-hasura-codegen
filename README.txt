@@ -8,6 +8,9 @@ https://www.gaji.jp/blog/2021/11/15/8532/
 yarn add express dotenv
 
 
+<grahph-codegen>
+yarn add @types/js-yaml --dev
+
 <graphql>
 yarn add graphql @graphql-codegen/cli --dev
 # エラーのためgraphql-request@5.1.0に固定
