@@ -1,0 +1,21 @@
+query user {
+  user {
+    id
+    email
+    password
+  }
+}
+
+query getUser($where: user_bool_exp) {
+  user(where: $where) {
+    id
+    email
+    password
+  }
+}
+
+mutation registerUser($user: user_insert_input!) {
+  insert_user_one(object: $user) {
+    id
+  }
+}
