@@ -108,3 +108,7 @@ trunk/
 
 #
 lib/
+
+# graphql
+introspection.json
+src/admin/admin.ts

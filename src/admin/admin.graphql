@@ -1,5 +1,11 @@
-query MyQuery {
+query testQuery {
   test {
+    id
+  }
+}
+
+query getUserId($user_id: String!) {
+  users(limit: 1, where: { id: { _eq: $user_id } }) {
     id
   }
 }
@@ -13,11 +19,67 @@ query MyQuery {
 #  }
 #}
 
-# getTeamName
+#
 # OKパターン
 # 指定されたteam_idでかつteam_memberに指定されたteam_id, user_idの人物が
 # 所属する場合にteamの名前や説明を返す(現在採用中)
 # ただし、別の方法もある
+query TeamNameOfMatch($team_id: String!, $user_id: String!) {
+  teams(
+    where: {
+      id: { _eq: $team_id }
+      _and: {
+        team_members: {
+          team_id: { _eq: $team_id }
+          _and: { user_id: { _eq: $user_id } }
+        }
+      }
+    }
+  ) {
+    name
+    description
+  }
+}
+
+#
+# 正解
+#
+query MatchedTeamName($team_id: String!, $user_id: String!) {
+  team_member_by_pk(team_id: $team_id, user_id: $user_id) {
+    team {
+      description
+      name
+    }
+  }
+}
+
+#
+query UserIdInTeamMember($team_id: String!, $user_id: String!) {
+  team_member_by_pk(team_id: $team_id, user_id: $user_id) {
+    user_id
+  }
+}
+
+query TeamGoldMember($team_id: String!) {
+  team_gold_member(where: { team_id: { _eq: $team_id } }) {
+    user_id
+  }
+}
+
+query PositionsSnapshot($team_id: String!) {
+  positions_snapshot(
+    where: { team_gold_member: { team_id: { _eq: $team_id } } }
+  ) {
+    user_id
+    md5
+    body
+    created_at
+    gold_user {
+      nickname
+    }
+    disabled
+  }
+}
 
 #query user {
 #  user {

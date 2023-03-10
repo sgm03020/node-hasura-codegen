@@ -3383,9 +3383,9 @@ export type Query_Root = {
   team_member_aggregate: Team_Member_Aggregate;
   /** fetch data from the table: "team_member" using primary key columns */
   team_member_by_pk?: Maybe<Team_Member>;
-  /** fetch data from the table: "teams" */
+  /** An array relationship */
   teams: Array<Teams>;
-  /** fetch aggregated fields from the table: "teams" */
+  /** An aggregate relationship */
   teams_aggregate: Teams_Aggregate;
   /** fetch data from the table: "teams" using primary key columns */
   teams_by_pk?: Maybe<Teams>;
@@ -3887,9 +3887,9 @@ export type Subscription_Root = {
   team_member_aggregate: Team_Member_Aggregate;
   /** fetch data from the table: "team_member" using primary key columns */
   team_member_by_pk?: Maybe<Team_Member>;
-  /** fetch data from the table: "teams" */
+  /** An array relationship */
   teams: Array<Teams>;
-  /** fetch aggregated fields from the table: "teams" */
+  /** An aggregate relationship */
   teams_aggregate: Teams_Aggregate;
   /** fetch data from the table: "teams" using primary key columns */
   teams_by_pk?: Maybe<Teams>;
@@ -4481,9 +4481,35 @@ export type Team_Member = {
   /** An object relationship */
   team: Teams;
   team_id: Scalars['String'];
+  /** An array relationship */
+  teams: Array<Teams>;
+  /** An aggregate relationship */
+  teams_aggregate: Teams_Aggregate;
+  /** An object relationship */
+  teams_rel?: Maybe<Teams>;
   /** An object relationship */
   user: Users;
   user_id: Scalars['String'];
+};
+
+
+/** columns and relationships of "team_member" */
+export type Team_MemberTeamsArgs = {
+  distinct_on?: InputMaybe<Array<Teams_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Teams_Order_By>>;
+  where?: InputMaybe<Teams_Bool_Exp>;
+};
+
+
+/** columns and relationships of "team_member" */
+export type Team_MemberTeams_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Teams_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Teams_Order_By>>;
+  where?: InputMaybe<Teams_Bool_Exp>;
 };
 
 /** aggregated selection of "team_member" */
@@ -4532,6 +4558,8 @@ export type Team_Member_Bool_Exp = {
   invoice_number?: InputMaybe<String_Comparison_Exp>;
   team?: InputMaybe<Teams_Bool_Exp>;
   team_id?: InputMaybe<String_Comparison_Exp>;
+  teams?: InputMaybe<Teams_Bool_Exp>;
+  teams_rel?: InputMaybe<Teams_Bool_Exp>;
   user?: InputMaybe<Users_Bool_Exp>;
   user_id?: InputMaybe<String_Comparison_Exp>;
 };
@@ -4548,6 +4576,8 @@ export type Team_Member_Insert_Input = {
   invoice_number?: InputMaybe<Scalars['String']>;
   team?: InputMaybe<Teams_Obj_Rel_Insert_Input>;
   team_id?: InputMaybe<Scalars['String']>;
+  teams?: InputMaybe<Teams_Arr_Rel_Insert_Input>;
+  teams_rel?: InputMaybe<Teams_Obj_Rel_Insert_Input>;
   user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
   user_id?: InputMaybe<Scalars['String']>;
 };
@@ -4612,6 +4642,8 @@ export type Team_Member_Order_By = {
   invoice_number?: InputMaybe<Order_By>;
   team?: InputMaybe<Teams_Order_By>;
   team_id?: InputMaybe<Order_By>;
+  teams_aggregate?: InputMaybe<Teams_Aggregate_Order_By>;
+  teams_rel?: InputMaybe<Teams_Order_By>;
   user?: InputMaybe<Users_Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
@@ -4727,6 +4759,20 @@ export type Teams_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']>;
 };
 
+/** order by aggregate values of table "teams" */
+export type Teams_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Teams_Max_Order_By>;
+  min?: InputMaybe<Teams_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "teams" */
+export type Teams_Arr_Rel_Insert_Input = {
+  data: Array<Teams_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Teams_On_Conflict>;
+};
+
 /** Boolean expression to filter rows from the table "teams". All fields are combined with a logical 'AND'. */
 export type Teams_Bool_Exp = {
   _and?: InputMaybe<Array<Teams_Bool_Exp>>;
@@ -4763,12 +4809,26 @@ export type Teams_Max_Fields = {
   name?: Maybe<Scalars['String']>;
 };
 
+/** order by max() on columns of table "teams" */
+export type Teams_Max_Order_By = {
+  description?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Teams_Min_Fields = {
   __typename?: 'teams_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "teams" */
+export type Teams_Min_Order_By = {
+  description?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "teams" */
@@ -5818,16 +5878,116 @@ export type Video_Recommended_Contents_Update_Column =
   /** column name */
   | 'recommended_id';
 
-export type MyQueryQueryVariables = Exact<{ [key: string]: never; }>;
+export type TestQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyQueryQuery = { __typename?: 'query_root', test: Array<{ __typename?: 'test', id: string }> };
+export type TestQueryQuery = { __typename?: 'query_root', test: Array<{ __typename?: 'test', id: string }> };
+
+export type GetUserIdQueryVariables = Exact<{
+  user_id: Scalars['String'];
+}>;
 
 
-export const MyQueryDocument = gql`
-    query MyQuery {
+export type GetUserIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: string }> };
+
+export type TeamNameOfMatchQueryVariables = Exact<{
+  team_id: Scalars['String'];
+  user_id: Scalars['String'];
+}>;
+
+
+export type TeamNameOfMatchQuery = { __typename?: 'query_root', teams: Array<{ __typename?: 'teams', name?: string | null, description?: string | null }> };
+
+export type MatchedTeamNameQueryVariables = Exact<{
+  team_id: Scalars['String'];
+  user_id: Scalars['String'];
+}>;
+
+
+export type MatchedTeamNameQuery = { __typename?: 'query_root', team_member_by_pk?: { __typename?: 'team_member', team: { __typename?: 'teams', description?: string | null, name?: string | null } } | null };
+
+export type UserIdInTeamMemberQueryVariables = Exact<{
+  team_id: Scalars['String'];
+  user_id: Scalars['String'];
+}>;
+
+
+export type UserIdInTeamMemberQuery = { __typename?: 'query_root', team_member_by_pk?: { __typename?: 'team_member', user_id: string } | null };
+
+export type TeamGoldMemberQueryVariables = Exact<{
+  team_id: Scalars['String'];
+}>;
+
+
+export type TeamGoldMemberQuery = { __typename?: 'query_root', team_gold_member: Array<{ __typename?: 'team_gold_member', user_id: string }> };
+
+export type PositionsSnapshotQueryVariables = Exact<{
+  team_id: Scalars['String'];
+}>;
+
+
+export type PositionsSnapshotQuery = { __typename?: 'query_root', positions_snapshot: Array<{ __typename?: 'positions_snapshot', user_id: string, md5: string, body?: string | null, created_at?: any | null, disabled: boolean, gold_user: { __typename?: 'gold_users', nickname?: string | null } }> };
+
+
+export const TestQueryDocument = gql`
+    query testQuery {
   test {
     id
+  }
+}
+    `;
+export const GetUserIdDocument = gql`
+    query getUserId($user_id: String!) {
+  users(limit: 1, where: {id: {_eq: $user_id}}) {
+    id
+  }
+}
+    `;
+export const TeamNameOfMatchDocument = gql`
+    query TeamNameOfMatch($team_id: String!, $user_id: String!) {
+  teams(
+    where: {id: {_eq: $team_id}, _and: {team_members: {team_id: {_eq: $team_id}, _and: {user_id: {_eq: $user_id}}}}}
+  ) {
+    name
+    description
+  }
+}
+    `;
+export const MatchedTeamNameDocument = gql`
+    query MatchedTeamName($team_id: String!, $user_id: String!) {
+  team_member_by_pk(team_id: $team_id, user_id: $user_id) {
+    team {
+      description
+      name
+    }
+  }
+}
+    `;
+export const UserIdInTeamMemberDocument = gql`
+    query UserIdInTeamMember($team_id: String!, $user_id: String!) {
+  team_member_by_pk(team_id: $team_id, user_id: $user_id) {
+    user_id
+  }
+}
+    `;
+export const TeamGoldMemberDocument = gql`
+    query TeamGoldMember($team_id: String!) {
+  team_gold_member(where: {team_id: {_eq: $team_id}}) {
+    user_id
+  }
+}
+    `;
+export const PositionsSnapshotDocument = gql`
+    query PositionsSnapshot($team_id: String!) {
+  positions_snapshot(where: {team_gold_member: {team_id: {_eq: $team_id}}}) {
+    user_id
+    md5
+    body
+    created_at
+    gold_user {
+      nickname
+    }
+    disabled
   }
 }
     `;
@@ -5839,8 +5999,26 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    MyQuery(variables?: MyQueryQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<MyQueryQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<MyQueryQuery>(MyQueryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'MyQuery', 'query');
+    testQuery(variables?: TestQueryQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<TestQueryQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<TestQueryQuery>(TestQueryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'testQuery', 'query');
+    },
+    getUserId(variables: GetUserIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetUserIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUserIdQuery>(GetUserIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserId', 'query');
+    },
+    TeamNameOfMatch(variables: TeamNameOfMatchQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<TeamNameOfMatchQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<TeamNameOfMatchQuery>(TeamNameOfMatchDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'TeamNameOfMatch', 'query');
+    },
+    MatchedTeamName(variables: MatchedTeamNameQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<MatchedTeamNameQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<MatchedTeamNameQuery>(MatchedTeamNameDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'MatchedTeamName', 'query');
+    },
+    UserIdInTeamMember(variables: UserIdInTeamMemberQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UserIdInTeamMemberQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UserIdInTeamMemberQuery>(UserIdInTeamMemberDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UserIdInTeamMember', 'query');
+    },
+    TeamGoldMember(variables: TeamGoldMemberQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<TeamGoldMemberQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<TeamGoldMemberQuery>(TeamGoldMemberDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'TeamGoldMember', 'query');
+    },
+    PositionsSnapshot(variables: PositionsSnapshotQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<PositionsSnapshotQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<PositionsSnapshotQuery>(PositionsSnapshotDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'PositionsSnapshot', 'query');
     }
   };
 }
