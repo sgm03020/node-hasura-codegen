@@ -60,12 +60,14 @@ query UserIdInTeamMember($team_id: String!, $user_id: String!) {
   }
 }
 
+#
 query TeamGoldMember($team_id: String!) {
   team_gold_member(where: { team_id: { _eq: $team_id } }) {
     user_id
   }
 }
 
+#
 query PositionsSnapshot($team_id: String!) {
   positions_snapshot(
     where: { team_gold_member: { team_id: { _eq: $team_id } } }
@@ -78,6 +80,64 @@ query PositionsSnapshot($team_id: String!) {
       nickname
     }
     disabled
+  }
+}
+
+#
+query GoldUserId($gold_id: String!) {
+  gold_users_by_pk(id: $gold_id) {
+    id
+    stop
+  }
+}
+
+# user_id   - character varying, primary key, unique
+# md5       - character varying
+# body      - text, nullable
+# create_at - timestamp with time zone, nullable
+# disabled  - boolean, default:false
+
+mutation InsertPositionsSnapshotOne(
+  $object: positions_snapshot_insert_input!
+  $update_columns: [positions_snapshot_update_column!] = [
+    user_id
+    md5
+    body
+    created_at
+  ]
+) {
+  insert_positions_snapshot_one(
+    on_conflict: {
+      constraint: positions_snapshot_pkey
+      update_columns: $update_columns
+    }
+    object: $object
+  ) {
+    user_id
+  }
+}
+
+mutation UpdateGoldUsers(
+  $user_id: String!
+  $brk: String!
+  $demo: numeric!
+  $tmode: String!
+  $leverage: Int!
+  $curr: String!
+  $mfree: money!
+) {
+  update_gold_users_by_pk(
+    pk_columns: { id: $user_id }
+    _set: {
+      broker: $brk
+      demo: $demo
+      trade_mode: $tmode
+      leverage: $leverage
+      currency: $curr
+      margin_free: $mfree
+    }
+  ) {
+    id
   }
 }
 

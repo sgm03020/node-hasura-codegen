@@ -1,5 +1,9 @@
+import * as dotenv from 'dotenv'
+dotenv.config()
 import express, { Request, Response, NextFunction } from "express";
 import api from './api'
+const port = process.env.PORT || 3000;
+const app = express()
 
 
 // CORS
@@ -20,8 +24,6 @@ const ignoreFavicon = (req: Request, res: Response, next: NextFunction) => {
   next()
 }
 
-const port = process.env.PORT || 3000;
-const app = express()
 
 app.use(cors)
 app.use(ignoreFavicon)
